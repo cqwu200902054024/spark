@@ -6,7 +6,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>lightningfastdataanalysis</artifactId>
+    <artifactId>base</artifactId>
     <name>${project.artifactId}</name>
     <description>My wonderfull scala app</description>
     <inceptionYear>2015</inceptionYear>
@@ -42,12 +42,12 @@
             <version>2.2.0</version>
         </dependency>
 
-        <!-- Spark SQL -->
+        <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-sql -->
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-sql_2.11</artifactId>
             <version>2.2.0</version>
-            <scope>provided</scope>
+           <!-- <scope>provided</scope>-->
         </dependency>
 
         <!-- Spark Hive -->
@@ -69,16 +69,15 @@
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-streaming-flume-sink_2.11</artifactId>
-            <version>1.6.0</version>
+            <version>2.2.0</version>
         </dependency>
 
         <!-- Spark Flume -->
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-streaming-flume_2.11</artifactId>
-            <version>1.6.0</version>
+            <version>2.2.0</version>
         </dependency>
-
 
         <!-- Spark ML -->
         <dependency>
@@ -86,8 +85,6 @@
             <artifactId>spark-mllib_2.11</artifactId>
             <version>2.2.0</version>
         </dependency>
-
-
 
         <dependency>
             <groupId>org.scala-lang</groupId>
@@ -124,7 +121,7 @@
                 <!-- see http://davidb.github.com/scala-maven-plugin -->
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.2.2</version>
                 <executions>
                     <execution>
                         <goals>

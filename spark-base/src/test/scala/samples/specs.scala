@@ -1,9 +1,9 @@
 package samples
 
 import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
 import org.specs2.mutable._
-
+import org.specs2.runner._
+  
 
 /**
  * Sample specification.
@@ -15,7 +15,6 @@ import org.specs2.mutable._
  *   http://etorreborre.github.com/specs2/guide/org.specs2.guide.Runners.html
  *
  */
-@RunWith(classOf[JUnitRunner])
 class MySpecTest extends Specification {
   "The 'Hello world' string" should {
     "contain 11 characters" in {
