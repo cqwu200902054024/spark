@@ -1,5 +1,7 @@
 package net.cqwu.apachespark
 
+import java.util.Properties
+
 import org.apache.spark.sql.{SaveMode, SparkSession}
 
 object SQLDataSourceExample {
@@ -11,7 +13,9 @@ object SQLDataSourceExample {
       .master("local[*]")
       .getOrCreate()
     //runBasicParquetExample(spark)
-    runParquetSchemaMergingExample(spark)
+   // runParquetSchemaMergingExample(spark)
+  //  runJsonDatasetExample(spark)
+    runJdbcDatasetExample(spark)
      spark.stop()
   }
 
@@ -50,6 +54,49 @@ object SQLDataSourceExample {
      // parquetDF.show()
     }
   private def runParquetSchemaMergingExample(spark: SparkSession): Unit = {
+      import spark.implicits._
+    //implicit val schema =
+    var squaresDF = spark.createDataFrame((1 to 6).map(i => (i,i * i)))
+    squaresDF = spark.sparkContext.parallelize((1 to 6).map(x => (x,x * x))).toDF("value","square")
+    squaresDF.write.mode(SaveMode.Overwrite).parquet("data/test_table/key=1")
+    val cubesDF = spark.sparkContext.makeRDD((6 to 10).map(x => (x, x * x))).toDF("value","cube")
+    cubesDF.write.mode(SaveMode.Overwrite).parquet("data/test_table/key=2")
+    val mergedDF = spark.read.option("mergeSchema","true").parquet("data/test_table")
+    mergedDF.show()
+    mergedDF.printSchema()
+  }
 
+  private def runJsonDatasetExample(spark: SparkSession): Unit = {
+    import spark.implicits._
+    val peopleDF = spark.read.json("D:\\spark\\examples\\src\\main\\resources\\people.json")
+    peopleDF.printSchema()
+    peopleDF.createOrReplaceTempView("people")
+    val teenagerNamesDF = spark.sql("SELECT name FROM people")
+    teenagerNamesDF.show()
+    //将String字符串转为String List
+    val otherPeopleDataset = spark.createDataset("""{"name":"Yin","address":{"city":"Columbus","state":"Ohio"}}""" :: Nil)
+    //将dataset转为df
+    val otherPeople = spark.read.json(otherPeopleDataset)
+    otherPeople.show()
+  }
+  private def runJdbcDatasetExample(spark: SparkSession): Unit = {
+     val jdbcDF = spark.read.format("jdbc")
+      .option("url","jdbc:mysql://192.168.1.205/test")
+      .option("dbtable","test")
+      .option("user","root")
+      .option("passwd","hadoop")
+      .load()
+    //jdbcDF.show()
+     val connectionProperties = new Properties()
+    connectionProperties.put("user","root")
+    connectionProperties.put("password","hadoop")
+    val jdbcDF2 = spark.read.jdbc("jdbc://mysql:192.168.1.205:/test","test.test",connectionProperties)
+    jdbcDF2.show()
+    jdbcDF.write.format("jdbc")
+      .option("url","jdbc://mysql:192.168.1.205/test")
+      .option("dbtable","test.test")
+      .option("user","root")
+      .option("password","hadoop")
+      .save()
   }
 }
