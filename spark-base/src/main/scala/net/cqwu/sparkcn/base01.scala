@@ -12,7 +12,9 @@ object base01 {
         x = x + y
       })*/
      // print(x)
-      val pairs = input.map((_,1))
+      val pairs = input.map((_,1)).rdd
+      pairs.reduceByKey()
+      val r = pairs.
       print(pairs.printSchema())
       val res = pairs.groupByKey(_._1)
       println(res.count.show())

@@ -7,6 +7,7 @@
   <modules>
     <module>lightning-fast-data-analysis</module>
     <module>spark-base</module>
+      <module>project-examples</module>
   </modules>
   <name>${project.artifactId}</name>
   <description>My wonderfull scala app</description>
@@ -26,6 +27,14 @@
     <scala.version>2.11.8</scala.version>
     <scala.compat.version>2.11</scala.compat.version>
   </properties>
+
+
+  <repositories>
+    <repository>
+      <id>cloudera</id>
+      <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+    </repository>
+  </repositories>
 
   <dependencies>
 
@@ -57,6 +66,20 @@
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-hive_2.11</artifactId>
       <version>2.2.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-client</artifactId>
+      <version>1.2.0-cdh5.12.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-server</artifactId>
+      <version>1.2.0-cdh5.12.0</version>
       <scope>provided</scope>
     </dependency>
 
